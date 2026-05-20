@@ -6,13 +6,13 @@ metadata:
     app: demand-api
 
 spec:
-  replicas: TODO
+  replicas: 2
 
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: TODO
-      maxUnavailable: TODO
+      maxSurge: 1
+      maxUnavailable: 1
 
   selector:
     matchLabels:
@@ -23,8 +23,6 @@ spec:
       labels:
         app: demand-api
     spec:
-      # Authentication for pulling images from Artifact Registry
-      # You must create this secret (see README Part 2)
       imagePullSecrets:
       - name: artifact-registry-secret
 
@@ -51,8 +49,8 @@ spec:
 
       containers:
       - name: demand-api
-        image: us-central1-docker.pkg.dev/[YOUR-NAME]/docker-repo/demand-api:latest
-        imagePullPolicy: TODO
+        image: us-central1-docker.pkg.dev/gcp-ops-ai/docker-repo/demand-api:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
@@ -63,31 +61,30 @@ spec:
               key: GCS_BUCKET
         resources:
           requests:
-            cpu: TODO
-            memory: TODO
+            cpu: "512m"
+            memory: "1Gi"
           limits:
-            cpu: TODO
-            memory: TODO
+            cpu: "1000m"
+            memory: "3Gi"
         readinessProbe:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: TODO
-          periodSeconds: TODO
-          failureThreshold: TODO
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: TODO
-          periodSeconds: TODO
-          failureThreshold: TODO
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          failureThreshold: 3
 
         volumeMounts:
         - name: data
           mountPath: /data/processed
 
-      # Shared volume for init container + main container
       volumes:
       - name: data
         emptyDir: {}
