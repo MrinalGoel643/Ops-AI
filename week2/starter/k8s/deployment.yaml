@@ -92,11 +92,7 @@ spec:
 
       volumes:
       - name: data
-<<<<<<< HEAD
-        emptyDir: {}
-=======
         emptyDir: {}
       - name: gcs-sa-key
         secret:
           secretName: gcs-sa-key  # Created in Part 2 Step 1b (see README)
->>>>>>> upstream/main
