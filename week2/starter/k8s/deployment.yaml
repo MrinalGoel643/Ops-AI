@@ -33,8 +33,10 @@ spec:
           - /bin/sh
           - -c
           - |
+            # Authenticate using service account key
+            gcloud auth activate-service-account --key-file=/var/secrets/gcs/key.json
             gsutil cp gs://${GCS_BUCKET}/demand_enriched.parquet /data/processed/
-            gsutil cp gs://${GCS_BUCKET}/demand_api_model.joblib /data/processed/
+            gsutil cp gs://${GCS_BUCKET}/lgbm_demand_model.txt /data/processed/
             gsutil cp gs://${GCS_BUCKET}/zone_hour_avg_fare.parquet /data/processed/
             gsutil cp gs://${GCS_BUCKET}/taxi_zones.geojson /data/processed/
         env:
@@ -46,6 +48,9 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data/processed
+        - name: gcs-sa-key
+          mountPath: /var/secrets/gcs
+          readOnly: true
 
       containers:
       - name: demand-api
@@ -87,4 +92,11 @@ spec:
 
       volumes:
       - name: data
+<<<<<<< HEAD
         emptyDir: {}
+=======
+        emptyDir: {}
+      - name: gcs-sa-key
+        secret:
+          secretName: gcs-sa-key  # Created in Part 2 Step 1b (see README)
+>>>>>>> upstream/main
