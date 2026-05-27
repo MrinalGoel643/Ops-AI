@@ -36,6 +36,10 @@
   - Baseline should pass (or mostly pass)
   - Corrupted should fail on your identified issues
 
+- [ ] Add a validation workflow:
+  - Open `.github/workflows/validate-data.yml`, choose your cron frequency, and update the run step to call your validation code
+  - Push and verify the workflow runs in GitHub Actions → Actions tab
+
 ## Part 3: Graceful Degradation
 
 - [ ] Copy `week2/backend/data.py` to `week3/backend/data.py`
@@ -67,4 +71,5 @@ Write a single report. Below is a suggested structure, but you are free to chang
 - [ ] `week3/validation/check_data_quality.py` - validation code
 - [ ] `week3/validation/test_data_quality.py` - tests
 - [ ] `week3/backend/data.py` - graceful degradation
+- [ ] `.github/workflows/validate-data.yml` - scheduled validation workflow
 - [ ] `REPORT.md` or `REPORT.pdf` with a logical structure and enough explanation of Issues identified, Validation approach + fallbacks, and Strategy & trade-offs
