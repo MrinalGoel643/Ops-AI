@@ -1,0 +1,48 @@
+name: Data Quality Check
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # Every hour — balances detection speed vs cost
+  push:
+    branches: [main]
+    paths:
+      - 'week3/data/**'
+      - 'week3/validation/**'
+  workflow_dispatch:       # Manual trigger for testing
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pandas pyarrow numpy
+
+      - name: Run data quality validation
+        id: validate
+        run: |
+          cd week3
+          python -m validation.check_data_quality
+
+      - name: Block deployment if validation fails
+        if: failure()
+        run: |
+          echo "=========================================="
+          echo "  DATA VALIDATION FAILED — deploy blocked"
+          echo "=========================================="
+          exit 1
+
+      - name: Validation passed
+        if: success()
+        run: |
+          echo "=========================================="
+          echo "  Data quality validation PASSED"
+          echo "=========================================="
