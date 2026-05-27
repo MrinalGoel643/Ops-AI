@@ -6,8 +6,9 @@ on:
   push:
     branches: [main]
     paths:
-      - 'week3/data/**'
       - 'week3/validation/**'
+      - 'week3/backend/**'
+      - '.github/workflows/validate-data.yml'
   workflow_dispatch:       # Manual trigger for testing
 
 jobs:
