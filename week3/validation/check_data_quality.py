@@ -13,9 +13,10 @@ import sys
 import pandas as pd
 import numpy as np
 from typing import Dict, List
+from pathlib import Path
 
 CUTOFF = pd.Timestamp("2026-01-16")
-DATA_PATH = "week3/data/demand_enriched_corrupted.parquet"
+DATA_PATH = Path(__file__).parent.parent / "data" / "demand_enriched_corrupted.parquet"
 
 REQUIRED_COLUMNS = [
     "PULocationID", "time_bucket", "trip_count", "hour", "minute",
